@@ -1,0 +1,3 @@
+[submodule "xdelta-napi/xdelta/xdelta-3.1.0"]
+	path = xdelta-napi/xdelta/xdelta-3.1.0
+	url = git@github.com:ably-forks/xdelta.git
