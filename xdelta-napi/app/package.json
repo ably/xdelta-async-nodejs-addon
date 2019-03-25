@@ -1,0 +1,15 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sample.js",
+  "scripts": {
+    "start": "node --napi-modules ./sample.js",
+    "debug": "node --napi-modules --inspect-brk ./sample.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "xdelta": "file:../xdelta"
+  }
+}
