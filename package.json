@@ -1,0 +1,18 @@
+{
+  "name": "delta-generation",
+  "version": "1.0.0",
+  "description": "Message Delta Generators",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ably/delta-generation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ably/delta-generation/issues"
+  },
+  "homepage": "https://github.com/ably/delta-generation#readme",
+  "dependencies": {
+    "xdelta": "file:xdelta-napi/xdelta"
+  }
+}
