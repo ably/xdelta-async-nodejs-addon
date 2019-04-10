@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "xdelta": "file:../xdelta"
+    "xdelta": "file:.."
   }
 }

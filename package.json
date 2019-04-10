@@ -1,18 +1,14 @@
 {
-  "name": "delta-generation",
+  "name": "xdelta",
   "version": "1.0.0",
-  "description": "Message Delta Generators",
-  "main": "index.js",
-  "scripts": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ably/delta-generation.git"
+  "main": "main.js",
+  "scripts": {
+    "preinstall": "./xdelta-3.1.0/xdelta3/buildXDelta.sh",
+    "install": "node-gyp rebuild"
   },
-  "bugs": {
-    "url": "https://github.com/ably/delta-generation/issues"
-  },
-  "homepage": "https://github.com/ably/delta-generation#readme",
+  "gypfile": true,
   "dependencies": {
-    "xdelta": "file:xdelta-napi/xdelta"
+    "bindings": "^1.5.0",
+    "node-addon-api": "^1.6.2"
   }
 }
