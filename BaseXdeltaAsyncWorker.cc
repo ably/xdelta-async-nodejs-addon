@@ -39,6 +39,10 @@ void BaseXdeltaAsyncWorker::OnOK()
 		{
 			err.Set("message", errorMessage);
 		}
+		else if (res == 28)
+		{
+			err.Set("message", "Insufficient output space.");
+		}
 
     	Callback().Call({err});
 	}
