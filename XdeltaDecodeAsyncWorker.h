@@ -14,5 +14,5 @@ class XdeltaDecodeAsyncWorker : public BaseXdeltaAsyncWorker
                                 Buffer<uint8_t> &result,
                                 Function& callback);
 
-        void Execute();
+        void Execute() override;
 };

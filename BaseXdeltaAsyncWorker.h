@@ -10,8 +10,8 @@ using namespace Napi;
 class BaseXdeltaAsyncWorker : public AsyncWorker
 {
 	public:
-		virtual void Execute() = 0;
-		void OnOK();
+		virtual void Execute() override = 0;
+		void OnOK() override;
 
     protected:
         BaseXdeltaAsyncWorker(Buffer<uint8_t> &dictionary,
