@@ -17,10 +17,11 @@ Object CreateErrorObject(Env env, int code, std::string message)
 Value EncodeBuffer(const CallbackInfo& info) {
     Env env = info.Env();
 
-    if (!info[3].IsFunction()) {
+    if (info.Length() != 5 || !info[4].IsFunction()) {
         return env.Undefined();
     }
-    Function callback = info[3].As<Function>();
+
+    Function callback = info[4].As<Function>();
 
     if (!info[0].IsBuffer()) {
         callback.Call({CreateErrorObject(env, 1, "Expected buffer as first argument.")});
@@ -40,8 +41,21 @@ Value EncodeBuffer(const CallbackInfo& info) {
     }
     Buffer<uint8_t> result = info[2].As<Buffer<uint8_t>>();
 
+    if (!info[3].IsNumber()) {
+        callback.Call({CreateErrorObject(env, 1, "Expected number as fourth argument.")});
+        return env.Undefined();
+    }
+    int32_t stringMatcherType = info[3].As<Number>().Int32Value();
+
+    if(stringMatcherType < XD3_SMATCH_DEFAULT ||
+    stringMatcherType > XD3_SMATCH_SOFT)
+    {
+        callback.Call({CreateErrorObject(env, 1, "Illegal fourth argument value. Only values defined in xd3SmatchConfig allowed.")});
+        return env.Undefined();        
+    }
+
     XdeltaEncodeAsyncWorker *encoder = NULL;
-    string error = XdeltaEncodeAsyncWorker::New(dictionary, target, result, callback, &encoder);
+    string error = XdeltaEncodeAsyncWorker::New(dictionary, target, result, stringMatcherType, callback, &encoder);
     if (!error.empty()) {
         callback.Call({CreateErrorObject(env, 2, error)});
         return env.Undefined();
@@ -113,6 +127,17 @@ Value SetMaxSimultaneouslyRunningEncoders(const CallbackInfo& info) {
 }
 
 Object Init(Env env, Object exports) {
+
+    Object xd3SmatchConfig = Object::New(env);
+    xd3SmatchConfig.Set("default", (int)XD3_SMATCH_DEFAULT);
+    xd3SmatchConfig.Set("slow", (int)XD3_SMATCH_SLOW);
+    xd3SmatchConfig.Set("fast", (int)XD3_SMATCH_FAST);
+    xd3SmatchConfig.Set("faster", (int)XD3_SMATCH_FASTER);
+    xd3SmatchConfig.Set("fastest", (int)XD3_SMATCH_FASTEST);
+    xd3SmatchConfig.Set("soft", (int)XD3_SMATCH_SOFT);
+
+    exports.Set("xd3SmatchConfig", xd3SmatchConfig);
+
     exports.Set(String::New(env, "EncodeBuffer"),
                 Function::New(env, EncodeBuffer));
     exports.Set(String::New(env, "DecodeBuffer"),

@@ -16,12 +16,14 @@ XdeltaEncodeAsyncWorker::XdeltaEncodeAsyncWorker(uint16_t id,
                                                 Buffer<uint8_t> &dictionary,
                                                 Buffer<uint8_t> &target,
                                                 Buffer<uint8_t> &result,
+                                                int32_t stringMatcherType,
                                                 Function& callback) : BaseXdeltaAsyncWorker(dictionary,
                                                                                             target,
                                                                                             result,
                                                                                             callback),
                                                                     id(id),
-                                                                    cancellationRequested(0)
+                                                                    cancellationRequested(0),
+                                                                    stringMatcherType(stringMatcherType)
 {
 }
 
@@ -32,7 +34,7 @@ XdeltaEncodeAsyncWorker::~XdeltaEncodeAsyncWorker()
 
 void XdeltaEncodeAsyncWorker::Execute()
 {
-    res = xd3_encode_memory(inputPtr,
+    res = xd3_encode_memory_enhanced(inputPtr,
                             inputLength,
                             dictionaryPtr,
                             dictionaryLength,
@@ -40,7 +42,8 @@ void XdeltaEncodeAsyncWorker::Execute()
                             &bytesWritten,
                             resultLength,
                             0,
-                            &cancellationRequested);
+                            &cancellationRequested,
+                            (xd3_smatch_cfg)stringMatcherType);
 }
 
 void XdeltaEncodeAsyncWorker::RequestCancellation()
@@ -58,6 +61,7 @@ uint16_t XdeltaEncodeAsyncWorker::GetNewEncoderId() {
 string XdeltaEncodeAsyncWorker::New(Buffer<uint8_t> &dictionary,
                                     Buffer<uint8_t> &target,
                                     Buffer<uint8_t> &result,
+                                    int32_t stringMatcherType,
                                     Function& callback,
                                     XdeltaEncodeAsyncWorker **encoder)
 {
@@ -66,7 +70,7 @@ string XdeltaEncodeAsyncWorker::New(Buffer<uint8_t> &dictionary,
         return "Max number of simultaneously running encoders exceeded.";
     }
 
-    *encoder = new XdeltaEncodeAsyncWorker(encoderId, dictionary, target, result, callback);
+    *encoder = new XdeltaEncodeAsyncWorker(encoderId, dictionary, target, result, stringMatcherType, callback);
     XdeltaEncodeAsyncWorker::runningEncoders[encoderId] = *encoder;
     return "";
 }

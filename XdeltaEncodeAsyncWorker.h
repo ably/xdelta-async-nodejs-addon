@@ -17,6 +17,7 @@ class XdeltaEncodeAsyncWorker : public BaseXdeltaAsyncWorker
         static string New(Buffer<uint8_t> &dictionary,
                         Buffer<uint8_t> &target,
                         Buffer<uint8_t> &result,
+                        int32_t stringMatcherType,
                         Function& callback,
                         XdeltaEncodeAsyncWorker **encoder);
 
@@ -30,11 +31,13 @@ class XdeltaEncodeAsyncWorker : public BaseXdeltaAsyncWorker
         static uint16_t maxSimultaneouslyRunningEncoders;
         static map<uint16_t, XdeltaEncodeAsyncWorker *> runningEncoders;
         uint8_t cancellationRequested;
+        int32_t stringMatcherType;
 
         XdeltaEncodeAsyncWorker(uint16_t id,
                                 Buffer<uint8_t> &dictionary,
                                 Buffer<uint8_t> &taget,
                                 Buffer<uint8_t> &result,
+                                int32_t stringMatcherType,
                                 Function& callback);
 
         ~XdeltaEncodeAsyncWorker() override;
