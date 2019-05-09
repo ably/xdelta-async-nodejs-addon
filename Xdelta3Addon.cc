@@ -111,21 +111,6 @@ Value CancelEncode(const CallbackInfo& info) {
     return env.Undefined();
 }
 
-Value SetMaxSimultaneouslyRunningEncoders(const CallbackInfo& info) {
-    Env env = info.Env();
-
-    if (!info[0].IsNumber()) {
-        return CreateErrorObject(env, 1, "Expected number as first argument.");
-    }
-
-    string error = XdeltaEncodeAsyncWorker::SetMaxSimultaneouslyRunningEncoders(info[0].As<Number>().Int32Value());
-    if (!error.empty()) {
-        return CreateErrorObject(env, 2, error);
-    }
-
-    return env.Undefined();
-}
-
 Object Init(Env env, Object exports) {
 
     Object xd3SmatchConfig = Object::New(env);
@@ -144,8 +129,6 @@ Object Init(Env env, Object exports) {
                 Function::New(env, DecodeBuffer));
     exports.Set(String::New(env, "CancelEncode"),
                 Function::New(env, CancelEncode));
-    exports.Set(String::New(env, "SetMaxSimultaneouslyRunningEncoders"),
-                Function::New(env, SetMaxSimultaneouslyRunningEncoders));
     return exports;
 }
 

@@ -9,10 +9,12 @@
 using namespace std;
 using namespace Napi;
 
-uint16_t XdeltaEncodeAsyncWorker::maxSimultaneouslyRunningEncoders = 255;
-map<uint16_t, XdeltaEncodeAsyncWorker *> XdeltaEncodeAsyncWorker::runningEncoders = map<uint16_t, XdeltaEncodeAsyncWorker *>();
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
+#define JS_MAX_SAFE_INTEGER 0x1FFFFFFFFFFFFF
 
-XdeltaEncodeAsyncWorker::XdeltaEncodeAsyncWorker(uint16_t id,
+map<int64_t, XdeltaEncodeAsyncWorker *> XdeltaEncodeAsyncWorker::runningEncoders = map<int64_t, XdeltaEncodeAsyncWorker *>();
+
+XdeltaEncodeAsyncWorker::XdeltaEncodeAsyncWorker(int64_t id,
                                                 Buffer<uint8_t> &dictionary,
                                                 Buffer<uint8_t> &target,
                                                 Buffer<uint8_t> &result,
@@ -51,10 +53,10 @@ void XdeltaEncodeAsyncWorker::RequestCancellation()
     cancellationRequested = 1;
 }
 
-uint16_t XdeltaEncodeAsyncWorker::GetNewEncoderId() {
-    static uint16_t nextEncoderId = 0;
-    uint16_t encoderId = nextEncoderId;
-    nextEncoderId = (encoderId + 1) % XdeltaEncodeAsyncWorker::maxSimultaneouslyRunningEncoders;
+int64_t XdeltaEncodeAsyncWorker::GetNewEncoderId() {
+    static int64_t nextEncoderId = 0;
+    int64_t encoderId = nextEncoderId;
+    nextEncoderId = (encoderId + 1) % JS_MAX_SAFE_INTEGER;
     return encoderId;
 }
 
@@ -65,34 +67,18 @@ string XdeltaEncodeAsyncWorker::New(Buffer<uint8_t> &dictionary,
                                     Function& callback,
                                     XdeltaEncodeAsyncWorker **encoder)
 {
-    uint64_t encoderId = GetNewEncoderId();
-    if (XdeltaEncodeAsyncWorker::runningEncoders.find(encoderId) != XdeltaEncodeAsyncWorker::runningEncoders.end()) {
-        return "Max number of simultaneously running encoders exceeded.";
-    }
-
+    int64_t encoderId = GetNewEncoderId();
     *encoder = new XdeltaEncodeAsyncWorker(encoderId, dictionary, target, result, stringMatcherType, callback);
     XdeltaEncodeAsyncWorker::runningEncoders[encoderId] = *encoder;
     return "";
 }
 
-string XdeltaEncodeAsyncWorker::RequestCancellation(int32_t id)
+string XdeltaEncodeAsyncWorker::RequestCancellation(int64_t id)
 {
     if (XdeltaEncodeAsyncWorker::runningEncoders.find(id) == XdeltaEncodeAsyncWorker::runningEncoders.end()) {
         return "Encoder not found.";
     }
 
     XdeltaEncodeAsyncWorker::runningEncoders[id]->RequestCancellation();
-    return "";
-}
-
-string XdeltaEncodeAsyncWorker::SetMaxSimultaneouslyRunningEncoders(int32_t requestedMaxSimultaneouslyRunningEncoders)
-{
-    if (requestedMaxSimultaneouslyRunningEncoders <= 0 ||
-        requestedMaxSimultaneouslyRunningEncoders > 0xFFFF)
-    {
-        return "Max number of simultaneously running encoders should be between 1 and 65535.";
-    }
-
-    XdeltaEncodeAsyncWorker::maxSimultaneouslyRunningEncoders = (uint16_t)requestedMaxSimultaneouslyRunningEncoders;
     return "";
 }
