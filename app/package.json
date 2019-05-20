@@ -4,12 +4,17 @@
   "description": "",
   "main": "sample.js",
   "scripts": {
-    "start": "node --napi-modules ./sample.js",
-    "debug": "node --napi-modules --inspect-brk ./sample.js"
+    "ts": "tsc",
+    "start": "tsc && node --napi-modules ./dist/sample.js",
+    "debug": "tsc && node --napi-modules --inspect-brk ./dist/sample.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "xdelta": "file:.."
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.2",
+    "typescript": "^3.4.5"
   }
 }

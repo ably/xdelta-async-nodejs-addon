@@ -1,1 +1,0 @@
-module.exports = require('bindings')('Xdelta3Addon.node');
