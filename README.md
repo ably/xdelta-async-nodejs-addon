@@ -4,13 +4,13 @@ Asynchronous native addon for Node.js that allows generating and applying diffs/
 
 The repo could be imported as npm package by adding 
 
-``
+```
 "dependencies":  {
   ...
   "xdelta": "git://github.com/ably/xdelta-async-nodejs-addon.git",
   ...
 }
-``
+```
 to your package.json.
 
 # Caveats
