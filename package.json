@@ -6,7 +6,8 @@
     "ts": "tsc",
     "preinstall": "./xdelta-3.1.0/xdelta3/buildXDelta.sh",
     "postinstall": "tsc",
-    "install": "node-gyp rebuild"
+    "install": "node-gyp rebuild",
+    "test": "mocha --require ts-node/register --watch-extensions ts,tsx \"test/tests/**/*.{ts,tsx}\""
   },
   "gypfile": true,
   "dependencies": {
@@ -15,6 +16,9 @@
   },
   "devDependencies": {
     "@types/node": "^12.0.2",
+    "@types/mocha": "^5.2.7",
+    "mocha": "^6.1.4",
+    "ts-node": "^8.3.0",
     "typescript": "^3.4.5"
   }
 }
