@@ -11,13 +11,10 @@
 		"strictFunctionTypes": true,
 		"strictPropertyInitialization": true,
 		"noImplicitAny": true,
-    "noUnusedLocals": true,
-    "declaration": true
+		"noUnusedLocals": true,
+		"declaration": true
 	},
-  "exclude": [
-    "node_modules",
-    "dist",
-	"app",
-	"test"
-  ]
+	"include": [
+		"src"
+	]
 }

@@ -17,6 +17,11 @@ to your package.json.
 
 The build infrastructure of the addon currently depends on tools that are Mac and Linux specific. Consequently, an installation on Windows will not be possible at this time.
 
+# Release checklist
+
+1. Run `grunt release:<type>` (where `type` is "major", "minor", "patch", "prepatch")
+2. Run `grunt release:deploy`
+3. Visit [https://github.com/ably/xdelta-async-nodejs-addon/tags](https://github.com/ably/xdelta-async-nodejs-addon/tags) and draft new release for the newly created tag
 
 # License
 
