@@ -1,4 +1,4 @@
-import { XdeltaAlgorithm, BlockMatchSpeed, DeltaGenerationErrorCodes } from '../../xdeltaalgorithm';
+import { XdeltaAlgorithm, BlockMatchSpeed, DeltaGenerationErrorCodes } from '../../src/xdeltaalgorithm';
 import { readFileSync, readdirSync } from 'fs';
 import { fail, ok, equal } from 'assert';
 import { join } from 'path';
