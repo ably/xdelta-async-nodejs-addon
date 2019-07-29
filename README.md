@@ -1,3 +1,7 @@
+# xdelta-async-nodejs-addon
+
+[![Build Status](https://travis-ci.org/ably/xdelta-async-nodejs-addon.svg?branch=master)](https://travis-ci.org/ably/xdelta-async-nodejs-addon)
+
 Asynchronous native addon for Node.js that allows generating and applying diffs/patches in VCDIFF format using the [xdelta](https://github.com/jmacd/xdelta) algorithm.
 
 # Usage
