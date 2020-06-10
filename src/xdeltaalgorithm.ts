@@ -19,6 +19,18 @@ export class XdeltaAlgorithm {
 		return result;
 	}
 
+	generateDeltaAsync(oldData: Buffer, newData: Buffer, maxDeltaSize: number, speed: BlockMatchSpeed): Promise<Buffer> {
+		return new Promise((resolve, reject) => {
+			this.generateDelta(oldData, newData, maxDeltaSize, speed, result => {
+				if (result.error) {
+					reject(result.error);
+				} else {
+					resolve(result.result);
+				}
+			});
+		});
+	}
+
 	applyDelta(oldData: Buffer, delta: Buffer, maxResultSize: number, callback: DeltaGenerationCallback): void {
 		const result = Buffer.alloc(maxResultSize);
 		xdelta.DecodeBuffer(oldData, delta, result, (error: {code: number, message: string}, bytesWritten: number) => {
