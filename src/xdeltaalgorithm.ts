@@ -44,10 +44,14 @@ export class XdeltaAlgorithm {
 	}
 }
 
-export interface DeltaGenerationCallbackArg {
-	result: Buffer | undefined;
-	error?: {code: number, message: string};
-}
+export type DeltaGenerationCallbackArg = {
+	result: Buffer;
+	error?: undefined;
+} | {
+	result?: undefined;
+	error: {code: number, message: string};
+};
+
 export type DeltaGenerationCallback = (deltaOperationCallbackArg: DeltaGenerationCallbackArg) => void;
 
 export enum BlockMatchSpeed {
