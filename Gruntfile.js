@@ -51,7 +51,7 @@ module.exports = function (grunt) {
 		}
 	);
 
-	grunt.registerTask('release:git-push', 'Pushes to git', execExternal('git push origin master --follow-tags'));
+	grunt.registerTask('release:git-push', 'Pushes to git', execExternal('git push origin main --follow-tags'));
 
 	grunt.registerTask('release:npm-publish', 'Deploys to npm', execExternal('npm publish .'));
 
